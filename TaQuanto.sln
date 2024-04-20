@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34714.143
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaQuanto.Service", "src\TaQuanto.Service\TaQuanto.Service.csproj", "{80530A05-5C43-422F-940D-82066D2FE56A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaQuanto.Infraestructure", "src\TaQuanto.Infraestructure\TaQuanto.Infraestructure.csproj", "{93CDD893-EAF1-459E-AB86-C8BA81C9026F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaQuanto.Domain", "src\TaQuanto.Domain\TaQuanto.Domain.csproj", "{95F5464E-05F0-4C3F-8843-10068E66E30D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Application", "1 - Application", "{52131E29-8C2D-49EE-83F9-E43B7B1C26D9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Service", "2 - Service", "{AAF342B0-0C76-4481-8D82-68A70508E55F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Domain", "3 - Domain", "{F94495BF-2D04-4207-96FF-E2CD2EA94476}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Infra", "4 - Infra", "{A90E505C-E353-43BD-ADF8-A04644A4F09B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaQuanto.Application", "src\TaQuanto.Application\TaQuanto.Application.csproj", "{CD2D3277-8A96-49B4-8027-BA5426FCF211}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{80530A05-5C43-422F-940D-82066D2FE56A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80530A05-5C43-422F-940D-82066D2FE56A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80530A05-5C43-422F-940D-82066D2FE56A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80530A05-5C43-422F-940D-82066D2FE56A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93CDD893-EAF1-459E-AB86-C8BA81C9026F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93CDD893-EAF1-459E-AB86-C8BA81C9026F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93CDD893-EAF1-459E-AB86-C8BA81C9026F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93CDD893-EAF1-459E-AB86-C8BA81C9026F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95F5464E-05F0-4C3F-8843-10068E66E30D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95F5464E-05F0-4C3F-8843-10068E66E30D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95F5464E-05F0-4C3F-8843-10068E66E30D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95F5464E-05F0-4C3F-8843-10068E66E30D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD2D3277-8A96-49B4-8027-BA5426FCF211}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD2D3277-8A96-49B4-8027-BA5426FCF211}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD2D3277-8A96-49B4-8027-BA5426FCF211}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD2D3277-8A96-49B4-8027-BA5426FCF211}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{80530A05-5C43-422F-940D-82066D2FE56A} = {AAF342B0-0C76-4481-8D82-68A70508E55F}
+		{93CDD893-EAF1-459E-AB86-C8BA81C9026F} = {A90E505C-E353-43BD-ADF8-A04644A4F09B}
+		{95F5464E-05F0-4C3F-8843-10068E66E30D} = {F94495BF-2D04-4207-96FF-E2CD2EA94476}
+		{CD2D3277-8A96-49B4-8027-BA5426FCF211} = {52131E29-8C2D-49EE-83F9-E43B7B1C26D9}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C8288C19-290E-4019-B556-259E348180C8}
+	EndGlobalSection
+EndGlobal
