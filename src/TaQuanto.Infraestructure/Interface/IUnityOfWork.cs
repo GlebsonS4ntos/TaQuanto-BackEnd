@@ -7,6 +7,6 @@
         IRepositoryCity RepositoryCity { get; }
         IRepositoryEstablishment RepositoryEstablishment { get; }
 
-        void Commit();
+        Task Commit();
     }
 }
