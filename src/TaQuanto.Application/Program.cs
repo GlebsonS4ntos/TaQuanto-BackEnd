@@ -1,5 +1,6 @@
 
 using TaQuanto.Infraestructure.Helpers;
+using TaQuanto.Service.Helpers;
 
 namespace TaQuanto.Application
 {
@@ -10,6 +11,7 @@ namespace TaQuanto.Application
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddInfraestructure(builder.Configuration);
+            builder.Services.AddService();
 
             builder.Services.AddControllers();
 

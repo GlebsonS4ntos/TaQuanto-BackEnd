@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TaQuanto.Infraestructure\TaQuanto.Infraestructure.csproj" />
+    <ProjectReference Include="..\TaQuanto.Service\TaQuanto.Service.csproj" />
   </ItemGroup>
 
 </Project>
