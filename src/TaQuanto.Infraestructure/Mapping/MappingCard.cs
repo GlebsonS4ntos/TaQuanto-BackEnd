@@ -17,6 +17,10 @@ namespace TaQuanto.Infraestructure.Mapping
             builder.Property(c => c.UpdateAt)
                 .HasColumnType("datetime2");
 
+            builder.Property(c => c.ValueCart)
+                .IsRequired()
+                .HasColumnType("decimal(18,2)");
+
             builder.ToTable("Cart");
         }
     }

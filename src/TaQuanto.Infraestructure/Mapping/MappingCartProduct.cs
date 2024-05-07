@@ -27,6 +27,10 @@ namespace TaQuanto.Infraestructure.Mapping
                 .HasForeignKey(cp => cp.CartId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Property(cp => cp.Quantity)
+                .IsRequired()
+                .HasColumnType("int");
+
             builder.ToTable("CartItem");
         }
     }

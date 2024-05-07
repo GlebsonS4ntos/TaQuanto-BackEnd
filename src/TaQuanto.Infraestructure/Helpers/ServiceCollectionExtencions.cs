@@ -31,6 +31,9 @@ namespace TaQuanto.Infraestructure.Helpers
             service.AddScoped<IRepositoryEstablishment, RepositoryEstablishment>();
             service.AddScoped<IRepositoryState, RepositoryState>();
             service.AddScoped<IRepositoryCity, RepositoryCity>();
+            service.AddScoped<IRepositoryCart, RepositoryCart>();
+            service.AddScoped<IRepositoryCartProduct, RepositoryCartProduct>();
+            service.AddScoped<IRepositoryCategory, RepositoryCategory>();
         }
 
         private static void AddUnitOfWork(IServiceCollection service)

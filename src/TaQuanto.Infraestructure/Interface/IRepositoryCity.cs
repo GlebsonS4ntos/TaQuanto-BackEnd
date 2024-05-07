@@ -4,5 +4,6 @@ namespace TaQuanto.Infraestructure.Interface
 {
     public interface IRepositoryCity : IRepositoryBase<City>
     {
+        Task<List<City>> GetAllCityByStateIdAsync(Guid id);
     }
 }
