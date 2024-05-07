@@ -14,6 +14,7 @@ namespace TaQuanto.Infraestructure.Helpers
         {
             AddDbContext(service, config);
             AddRepositories(service);
+            AddUnitOfWork(service);
         }
 
         private static void AddDbContext(IServiceCollection service, IConfiguration config)

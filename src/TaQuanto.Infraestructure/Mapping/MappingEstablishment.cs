@@ -14,15 +14,16 @@ namespace TaQuanto.Infraestructure.Mapping
                 .IsRequired()
                 .HasColumnType("varchar(max)");
 
-            builder.Property(e => e.Biography)
-                .IsRequired()
-                .HasColumnType("varchar(max)"); 
-
             builder.Property(e => e.ImageUrl)
                 .IsRequired()
                 .HasColumnType("varchar(max)"); 
 
-            builder.Property(e => e.ImageBannerUrl)
+            builder.Property(e => e.IsDraft)
+                .IsRequired()
+                .HasColumnType("bit");
+
+            builder.Property(e => e.Address)
+                .IsRequired()
                 .HasColumnType("varchar(max)");
 
             builder.HasOne(e => e.City)

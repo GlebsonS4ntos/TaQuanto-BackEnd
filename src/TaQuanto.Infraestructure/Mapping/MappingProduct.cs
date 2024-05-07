@@ -22,7 +22,7 @@ namespace TaQuanto.Infraestructure.Mapping
                 .IsRequired()
                 .HasColumnType("decimal(18,2)");
 
-            builder.Property(p => p.NewPrice)
+            builder.Property(p => p.Price)
                 .HasColumnType("decimal(18,2)");
 
             builder.Property(p => p.ImageUrl)
@@ -39,6 +39,11 @@ namespace TaQuanto.Infraestructure.Mapping
             builder.HasOne(p => p.Establishment)
                 .WithMany(e => e.Products)
                 .HasForeignKey(p => p.EstablishmentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(p => p.Category)
+                .WithMany(c => c.Products)
+                .HasForeignKey(p => p.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.ToTable("Product");
