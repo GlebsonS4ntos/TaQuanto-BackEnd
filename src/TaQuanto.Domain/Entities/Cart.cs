@@ -6,5 +6,6 @@ namespace TaQuanto.Domain.Entities
     {
         [JsonIgnore]
         public IEnumerable<CartProduct>? CartProducts { get; set; }
+        public decimal ValueCart { get; set; }
     }
 }

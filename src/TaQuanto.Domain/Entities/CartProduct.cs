@@ -10,5 +10,6 @@ namespace TaQuanto.Domain.Entities
         public Guid CartId { get; set; }
         [JsonIgnore]
         public Cart? Cart { get; set; }
+        public int Quantity { get; set; }
     }
 }
