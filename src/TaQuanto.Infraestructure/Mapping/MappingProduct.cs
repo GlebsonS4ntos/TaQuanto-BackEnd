@@ -19,10 +19,10 @@ namespace TaQuanto.Infraestructure.Mapping
                 .HasColumnType("varchar(max)");
 
             builder.Property(p => p.OriginalPrice)
-                .IsRequired()
                 .HasColumnType("decimal(18,2)");
 
             builder.Property(p => p.Price)
+                .IsRequired()
                 .HasColumnType("decimal(18,2)");
 
             builder.Property(p => p.ImageUrl)
