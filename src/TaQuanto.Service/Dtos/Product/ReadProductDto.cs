@@ -1,4 +1,7 @@
-﻿namespace TaQuanto.Service.Dtos.Product
+﻿using TaQuanto.Service.Dtos.Category;
+using TaQuanto.Service.Dtos.Establishment;
+
+namespace TaQuanto.Service.Dtos.Product
 {
     public class ReadProductDto
     {
@@ -6,7 +9,11 @@
         public string? Name { get; set; }
         public string? Description { get; set; }
         public decimal OriginalPrice { get; set; }
-        public decimal NewPrice { get; set; }
+        public decimal Price { get; set; }
         public string? ImageUrl { get; set; }
+        public Guid EstablishmentId { get; set; }
+        public ReadEstablishmentDto? Establishment { get; set; }
+        public Guid CategoryId { get; set; }
+        public ReadCategoryDto? Category { get; set; }
     }
 }

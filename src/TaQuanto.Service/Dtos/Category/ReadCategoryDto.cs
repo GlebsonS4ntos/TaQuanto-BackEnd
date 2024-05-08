@@ -1,0 +1,10 @@
+﻿namespace TaQuanto.Service.Dtos.Category
+{
+    public class ReadCategoryDto
+    {
+        public Guid Id { get; set; }
+        public string? Name { get; set; }
+        public Guid ParentCategoriaId { get; set; }
+        public ReadCategoryDto? ParentCategoria { get; set; }
+    }
+}
