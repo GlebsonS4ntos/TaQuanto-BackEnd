@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
 using TaQuanto.Domain.Entities;
+using TaQuanto.Service.Dtos.Cart;
+using TaQuanto.Service.Dtos.CartProduct;
+using TaQuanto.Service.Dtos.Category;
 using TaQuanto.Service.Dtos.City;
 using TaQuanto.Service.Dtos.Establishment;
 using TaQuanto.Service.Dtos.Product;
@@ -14,23 +17,29 @@ namespace TaQuanto.Service.Config
             CreateMap<Product, ReadProductDto>()
                 .ForMember(dto => dto.Id, opt => opt.MapFrom(p => p.Id))
                 .ForMember(dto => dto.OriginalPrice, opt => opt.MapFrom(p => p.OriginalPrice))
-                .ForMember(dto => dto.NewPrice, opt => opt.MapFrom(p => p.NewPrice))
+                .ForMember(dto => dto.Price, opt => opt.MapFrom(p => p.Price))
                 .ForMember(dto => dto.Description, opt => opt.MapFrom(p => p.Description))
                 .ForMember(dto => dto.Name, opt => opt.MapFrom(p => p.Name))
-                .ForMember(dto => dto.ImageUrl, opt => opt.MapFrom(p => p.ImageUrl));
+                .ForMember(dto => dto.ImageUrl, opt => opt.MapFrom(p => p.ImageUrl))
+                .ForMember(dto => dto.EstablishmentId, opt => opt.MapFrom(p => p.EstablishmentId))
+                .ForMember(dto => dto.Establishment, opt => opt.MapFrom(p => p.Establishment))
+                .ForMember(dto => dto.CategoryId, opt => opt.MapFrom(p => p.CategoryId))
+                .ForMember(dto => dto.Category, opt => opt.MapFrom(p => p.Category));
 
             CreateMap<CreateOrUpdateProductDto, Product>()
                 .ForMember(p => p.Id, opt => opt.MapFrom(dto => dto.Id))
                 .ForMember(p => p.OriginalPrice, opt => opt.MapFrom(dto => dto.OriginalPrice))
-                .ForMember(p => p.NewPrice, opt => opt.MapFrom(dto => dto.NewPrice))
+                .ForMember(p => p.Price, opt => opt.MapFrom(dto => dto.Price))
                 .ForMember(p => p.Name, opt => opt.MapFrom(dto => dto.Name))
                 .ForMember(p => p.EstablishmentId, opt => opt.MapFrom(dto => dto.EstablishmentId))
-                .ForMember(p => p.Description, opt => opt.MapFrom(dto => dto.Description));
+                .ForMember(p => p.Description, opt => opt.MapFrom(dto => dto.Description))
+                .ForMember(p => p.CategoryId, opt => opt.MapFrom(dto => dto.CategoryId));
 
             CreateMap<City, ReadCityDto>()
                 .ForMember(dto => dto.Id, opt => opt.MapFrom(c => c.Id))
                 .ForMember(dto => dto.Name, opt => opt.MapFrom(c => c.Name))
-                .ForMember(dto => dto.StateId, opt => opt.MapFrom(c => c.StateId));
+                .ForMember(dto => dto.StateId, opt => opt.MapFrom(c => c.StateId))
+                .ForMember(dto => dto.State, opt => opt.MapFrom(c => c.State));
 
             CreateMap<State, ReadStateDto>()
                 .ForMember(dto => dto.Id, opt => opt.MapFrom(s => s.Id))
@@ -42,16 +51,47 @@ namespace TaQuanto.Service.Config
                 .ForMember(dto => dto.Id, opt => opt.MapFrom(e => e.Id))
                 .ForMember(dto => dto.Name, opt => opt.MapFrom(e => e.Name))
                 .ForMember(dto => dto.ImageUrl, opt => opt.MapFrom(e => e.ImageUrl))
-                .ForMember(dto => dto.ImageBannerUrl, opt => opt.MapFrom(e => e.ImageBannerUrl))
-                .ForMember(dto => dto.Biography, opt => opt.MapFrom(e => e.Biography))
                 .ForMember(dto => dto.CityId, opt => opt.MapFrom(e => e.CityId))
-                .ForMember(dto => dto.City, opt => opt.MapFrom(e => e.City));
+                .ForMember(dto => dto.City, opt => opt.MapFrom(e => e.City))
+                .ForMember(dto => dto.Adress, opt => opt.MapFrom(e => e.Address))
+                .ForMember(dto => dto.IsDraft, opt => opt.MapFrom(e => e.IsDraft));
 
             CreateMap<CreateOrUpdateEstablishmentDto, Establishment>()
                 .ForMember(e => e.Id, opt => opt.MapFrom(dto => dto.Id))
                 .ForMember(e => e.Name, opt => opt.MapFrom(dto => dto.Name))
-                .ForMember(e => e.Biography, opt => opt.MapFrom(dto => dto.Biography))
-                .ForMember(e => e.CityId, opt => opt.MapFrom(dto => dto.CityId));
+                .ForMember(e => e.CityId, opt => opt.MapFrom(dto => dto.CityId))
+                .ForMember(e => e.IsDraft, opt => opt.MapFrom(dto => dto.IsDraft))
+                .ForMember(e => e.Address, opt => opt.MapFrom(dto => dto.Adress));
+
+            CreateMap<CreateOrUpdateCategoryDto, Category>()
+                .ForMember(c => c.Id, opt => opt.MapFrom(dto => dto.Id))
+                .ForMember(c => c.Name, opt => opt.MapFrom(dto => dto.Name))
+                .ForMember(c => c.ParentCategoriaId, opt => opt.MapFrom(dto => dto.ParentCategoriaId));
+
+            CreateMap<Category, ReadCategoryDto>()
+                .ForMember(dto => dto.Id, opt => opt.MapFrom(c => c.Id))
+                .ForMember(dto => dto.Name, opt => opt.MapFrom(c => c.Name))
+                .ForMember(dto => dto.ParentCategoriaId, opt => opt.MapFrom(c => c.ParentCategoriaId))
+                .ForMember(dto => dto.ParentCategoria, opt => opt.MapFrom(c => c.ParentCategory));
+
+            CreateMap<CreateOrUpdateCartDto, Cart>()
+                .ForMember(c => c.Id, opt => opt.MapFrom(dto => dto.Id));
+
+            CreateMap<Cart, ReadCartDto>()
+                .ForMember(dto => dto.Id, opt => opt.MapFrom(c => c.Id))
+                .ForMember(dto => dto.ValueCart, opt => opt.MapFrom(c => c.ValueCart));
+
+            CreateMap<CreateOrUpdateCartProductDto, CartProduct>()
+                .ForMember(cp => cp.Id, opt => opt.MapFrom(dto => dto.Id))
+                .ForMember(cp => cp.ProductId, opt => opt.MapFrom(dto => dto.ProductId))
+                .ForMember(cp => cp.Quantity, opt => opt.MapFrom(dto => dto.Quantity));
+
+            CreateMap<CartProduct, ReadCartProductDto>()
+                .ForMember(dto => dto.Id, opt => opt.MapFrom(cp => cp.Id))
+                .ForMember(dto => dto.ProductId, opt => opt.MapFrom(cp => cp.ProductId))
+                .ForMember(dto => dto.Product, opt => opt.MapFrom(cp => cp.Product))
+                .ForMember(dto => dto.CartId, opt => opt.MapFrom(cp => cp.CartId))
+                .ForMember(dto => dto.Quantity, opt => opt.MapFrom(cp => cp.Quantity));
         }
     }
 }
