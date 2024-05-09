@@ -23,6 +23,8 @@ namespace TaQuanto.Service.Helpers
 
         private static void AddServices(IServiceCollection service) 
         {
+            service.AddScoped<IServiceCart, ServiceCart>();
+            service.AddScoped<IServiceCategory, ServiceCategory>();
             service.AddScoped<IServiceCity, ServiceCity>();
             service.AddScoped<IServiceState, ServiceState>();
             service.AddScoped<IServiceProduct, ServiceProduct>();
