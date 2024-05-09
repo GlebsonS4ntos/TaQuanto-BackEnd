@@ -79,7 +79,8 @@ namespace TaQuanto.Service.Config
 
             CreateMap<Cart, ReadCartDto>()
                 .ForMember(dto => dto.Id, opt => opt.MapFrom(c => c.Id))
-                .ForMember(dto => dto.ValueCart, opt => opt.MapFrom(c => c.ValueCart));
+                .ForMember(dto => dto.ValueCart, opt => opt.MapFrom(c => c.ValueCart))
+                .ForMember(dto => dto.CartProducts, opt => opt.MapFrom(c => c.CartProducts));
 
             CreateMap<CreateOrUpdateCartProductDto, CartProduct>()
                 .ForMember(cp => cp.Id, opt => opt.MapFrom(dto => dto.Id))
