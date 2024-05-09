@@ -11,18 +11,21 @@ namespace TaQuanto.Infraestructure.Data.UnitOfWork
         private IRepositoryProduct? _repositoryProduct;
         private IRepositoryCity? _repositoryCity;
         private IRepositoryEstablishment? _repositoryEstablishment;
+        private IRepositoryCart? _repositoryCart;
+        private IRepositoryCategory? _repositoryCategory;
+        private IRepositoryCartProduct? _repositoryCartProduct;
 
         public UnitOfWork(TaQuantoContext context)
         {
             _context = context;
         }
 
-        public IRepositoryState RepositoryState 
-        { 
-            get 
-            { 
+        public IRepositoryState RepositoryState
+        {
+            get
+            {
                 return _repositoryState = _repositoryState ?? new RepositoryState(_context);
-            } 
+            }
         }
 
         public IRepositoryCity RepositoryCity
@@ -46,6 +49,30 @@ namespace TaQuanto.Infraestructure.Data.UnitOfWork
             get
             {
                 return _repositoryEstablishment = _repositoryEstablishment ?? new RepositoryEstablishment(_context);
+            }
+        }
+
+        public IRepositoryCategory RepositoryCategory
+        {
+            get
+            {
+                return _repositoryCategory = _repositoryCategory ?? new RepositoryCategory(_context);
+            }
+        }
+
+        public IRepositoryCart RepositoryCart
+        {
+            get
+            {
+                return _repositoryCart = _repositoryCart ?? new RepositoryCart(_context);
+            }
+        }
+
+        public IRepositoryCartProduct RepositoryCartProduct
+        {
+            get
+            {
+                return _repositoryCartProduct = _repositoryCartProduct ?? new RepositoryCartProduct(_context);
             }
         }
 
