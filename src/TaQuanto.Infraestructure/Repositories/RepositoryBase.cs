@@ -25,7 +25,7 @@ namespace TaQuanto.Infraestructure.Repositories
             _context.Set<T>().Remove(entity);
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _context.Set<T>().ToListAsync();
         }
