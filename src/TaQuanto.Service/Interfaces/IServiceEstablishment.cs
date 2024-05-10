@@ -9,6 +9,6 @@ namespace TaQuanto.Service.Interfaces
         Task UpdateEstablishmentAsync(CreateOrUpdateEstablishmentDto e, Guid id);
         Task DeleteEstablishmentAsync(Guid id);
         Task<ReadEstablishmentDto> GetEstablishmentByIdAsync(Guid id);
-        Task<IEnumerable<ReadEstablishmentDto>> GetAllEstablishmentByCityIdAsync(Guid id);
+        Task<IEnumerable<ReadEstablishmentDto>> GetAllEstablishmentAsync();
     }
 }
