@@ -9,8 +9,8 @@ namespace TaQuanto.Service.Validations
         public ProductValidation()
         {
             RuleFor(p => p.Name)
-                .NotNull().WithMessage("O Nome do Produto não pode ser nulo.")
-                .NotEmpty().WithMessage("O Nome do Produto não pode ser em branco.")
+                .NotNull().WithMessage("O Produto deve possuir um Nome.")
+                .NotEmpty().WithMessage("O Produto deve possuir um Nome.")
                 .MinimumLength(3).WithMessage("O Nome do Produto precisa de no minimo 3 caracteres.")
                 .MaximumLength(100).WithMessage("O Nome do Produto precisa ter no maximo 100 caracteres");
 
@@ -21,9 +21,9 @@ namespace TaQuanto.Service.Validations
                 .MaximumLength(200).WithMessage("A Descrição precisa ter no maximo 200 caracteres");
 
             RuleFor(p => p.Image)
-                .NotNull().WithMessage("Um Produto deve Conter uma Imagem.")
-                .NotEmpty().WithMessage("Um Produto deve Conter uma Imagem.")
-                .Must(VerifyExtencion).WithMessage("O Arquivo da Imagem adicionada não tem uma extensão suportada.");
+                .Must((p, image) => VerifyImageIsNullInAdd(image, p.Id)).WithMessage("Adicione o Arquivo de Imagem.")
+                .Must(VerifyExtencion).WithMessage("O Arquivo da Imagem adicionada não tem uma extensão suportada.")
+                .Must(VerifyImageSize).WithMessage("O Arquivo da Imagem adicionada é maior que 5MB");
 
             RuleFor(p => p.EstablishmentId)
                 .NotNull().WithMessage("O Produto deve pertencer a um Estabelecimento.")
@@ -33,14 +33,13 @@ namespace TaQuanto.Service.Validations
                 .Must((p, originalPrice) => VerifyOriginalPrice(originalPrice, p.Price)).WithMessage("O Produto deve ter um Preço Original Válido.");
 
             RuleFor(p => p.Price)
-                .NotNull().WithMessage("")
-                .NotEmpty().WithMessage("")
-                .GreaterThan(0).WithMessage("");
+                .NotNull().WithMessage("O Produto deve ter um Preco.")
+                .NotEmpty().WithMessage("O Produto deve ter um Preco")
+                .GreaterThan(0).WithMessage("O Preco do Produto deve ser maior que 0.");
 
             RuleFor(p => p.CategoryId)
-                .NotNull().WithMessage("")
-                .NotEmpty().WithMessage("");
-
+                .NotNull().WithMessage("O Produto deve ter uma Categoria")
+                .NotEmpty().WithMessage("O Produto deve ter uma Categoria");
         }
 
         private bool VerifyExtencion(IFormFile? image)
@@ -61,6 +60,26 @@ namespace TaQuanto.Service.Validations
                 return true;
             }
             return false;
+        }
+
+        private bool VerifyImageSize(IFormFile? image)
+        {
+            var imageSizeInBytes = image.Length;
+            double imageSizeInMb = imageSizeInBytes / 1048576.0;
+            if(imageSizeInMb <= 5)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool VerifyImageIsNullInAdd(IFormFile? image, Guid? id)
+        {
+            if (id == null && image == null)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

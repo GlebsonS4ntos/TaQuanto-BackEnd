@@ -9,7 +9,7 @@ namespace TaQuanto.Service.Validations
         {
             RuleFor(cp => cp.ProductId)
                 .NotNull().WithMessage("O Item deve ter um Produto.")
-                .NotNull().WithMessage("O Item deve ter um Produto.");
+                .NotEmpty().WithMessage("O Item deve ter um Produto.");
 
             RuleFor(cp => cp.Quantity)
                 .GreaterThanOrEqualTo(1).WithMessage("A quantidade de Produtos deve ser maior que 0.");
