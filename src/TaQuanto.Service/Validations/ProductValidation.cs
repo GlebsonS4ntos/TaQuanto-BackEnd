@@ -22,8 +22,8 @@ namespace TaQuanto.Service.Validations
 
             RuleFor(p => p.Image)
                 .Must((p, image) => VerifyImageIsNullInAdd(image, p.Id)).WithMessage("Adicione o Arquivo de Imagem.")
-                .Must(VerifyExtencion).WithMessage("O Arquivo da Imagem adicionada não tem uma extensão suportada.")
-                .Must(VerifyImageSize).WithMessage("O Arquivo da Imagem adicionada é maior que 5MB");
+                .Must((p, image) => VerifyExtencion(image, p.Id)).WithMessage("O Arquivo da Imagem adicionada não tem uma extensão suportada.")
+                .Must((p, image) => VerifyImageSize(image, p.Id)).WithMessage("O Arquivo da Imagem adicionada é maior que 5MB");
 
             RuleFor(p => p.EstablishmentId)
                 .NotNull().WithMessage("O Produto deve pertencer a um Estabelecimento.")
@@ -42,8 +42,13 @@ namespace TaQuanto.Service.Validations
                 .NotEmpty().WithMessage("O Produto deve ter uma Categoria");
         }
 
-        private bool VerifyExtencion(IFormFile? image)
+        private bool VerifyExtencion(IFormFile? image, Guid? id)
         {
+            if (id != null && image == null)
+            {
+                return true;
+            }
+
             var supportedExtencions = new[] { ".jpg", ".png", ".jpeg" };
             var extencionFile = Path.GetExtension(image.FileName).ToLowerInvariant();
 
@@ -62,8 +67,13 @@ namespace TaQuanto.Service.Validations
             return false;
         }
 
-        private bool VerifyImageSize(IFormFile? image)
+        private bool VerifyImageSize(IFormFile? image, Guid? id)
         {
+            if (id != null && image == null)
+            {
+                return true;
+            }
+
             var imageSizeInBytes = image.Length;
             double imageSizeInMb = imageSizeInBytes / 1048576.0;
             if(imageSizeInMb <= 5)
