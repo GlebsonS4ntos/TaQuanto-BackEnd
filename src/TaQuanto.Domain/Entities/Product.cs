@@ -9,6 +9,7 @@ namespace TaQuanto.Domain.Entities
         public decimal? OriginalPrice { get; set; }
         public decimal Price { get; set; }
         public string? ImageUrl { get; set; }
+        public string? ImagePublicId { get; set; }
         public Guid EstablishmentId { get; set; }
         [JsonIgnore]
         public Establishment? Establishment { get; set; }

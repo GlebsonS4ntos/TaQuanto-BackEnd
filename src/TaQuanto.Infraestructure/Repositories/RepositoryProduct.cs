@@ -13,15 +13,5 @@ namespace TaQuanto.Infraestructure.Repositories
         {
             _context = context;
         }
-
-        public async Task<IEnumerable<Product>> GetAllProductsByEstablishmentIdAsync(Guid id)
-        {
-            return await _context.Products.Where(p => p.EstablishmentId == id).ToListAsync();
-        }
-
-        public async Task<IEnumerable<Product>> GetAllProductsInPromotionByCityId(Guid id)
-        {
-            return await _context.Products.Where(p => (p.Establishment.CityId == id) && (p.Price < p.OriginalPrice)).ToListAsync();
-        }
     }
 }

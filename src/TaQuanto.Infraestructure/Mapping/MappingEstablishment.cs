@@ -16,7 +16,11 @@ namespace TaQuanto.Infraestructure.Mapping
 
             builder.Property(e => e.ImageUrl)
                 .IsRequired()
-                .HasColumnType("varchar(max)"); 
+                .HasColumnType("varchar(max)");
+
+            builder.Property(e => e.ImagePublicId)
+                .IsRequired()
+                .HasColumnType("varchar(max)");
 
             builder.Property(e => e.IsDraft)
                 .IsRequired()

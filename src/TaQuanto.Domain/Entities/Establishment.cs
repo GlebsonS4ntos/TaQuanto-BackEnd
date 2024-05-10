@@ -6,6 +6,7 @@ namespace TaQuanto.Domain.Entities
     {
         public string? Name { get; set; }
         public string? ImageUrl {  get; set; }
+        public string? ImagePublicId { get; set; }
         public string? Address { get; set; }
         public bool IsDraft { get; set; }
         public Guid CityId { get; set; }

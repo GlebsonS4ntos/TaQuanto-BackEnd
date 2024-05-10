@@ -18,10 +18,5 @@ namespace TaQuanto.Infraestructure.Repositories
         {
             return await _context.Categories.Where(c => c.ParentCategoriaId == null).ToListAsync();
         }
-
-        public async Task<IEnumerable<Category>> GetAllSubCategoriesByCategoryIdAsync(Guid id)
-        {
-            return await _context.Categories.Where(c => c.ParentCategoriaId == id).ToListAsync();
-        }
     }
 }
