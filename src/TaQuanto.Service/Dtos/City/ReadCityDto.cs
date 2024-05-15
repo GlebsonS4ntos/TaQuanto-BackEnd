@@ -7,6 +7,5 @@ namespace TaQuanto.Service.Dtos.City
         public Guid Id { get; set; }
         public string? Name { get; set; }
         public Guid StateId { get; set; }
-        public ReadStateDto? State { get; set; }
     }
 }

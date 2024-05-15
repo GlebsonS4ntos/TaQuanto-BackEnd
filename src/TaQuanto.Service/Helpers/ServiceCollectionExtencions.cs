@@ -25,6 +25,7 @@ namespace TaQuanto.Service.Helpers
 
         private static void AddServices(IServiceCollection service) 
         {
+            service.AddScoped<IServiceCartProduct, ServiceCartProduct>();
             service.AddScoped<IServiceCart, ServiceCart>();
             service.AddScoped<IServiceCategory, ServiceCategory>();
             service.AddScoped<IServiceCity, ServiceCity>();
@@ -36,7 +37,13 @@ namespace TaQuanto.Service.Helpers
 
         private static void AddConfig(IServiceCollection service, IConfiguration config)
         {
-            service.Configure<CloudinaryConfig>(options => config.GetSection("CloudinaryConfig"));
+            var cloudinaryConfig = config.GetSection("CloudinaryConfig");
+            service.Configure<CloudinaryConfig>(options =>
+            {
+                options.ApiKey = cloudinaryConfig.GetSection("ApiKey").Value;
+                options.CloudName = cloudinaryConfig.GetSection("CloudName").Value;
+                options.ApiSecret = cloudinaryConfig.GetSection("ApiSecret").Value; 
+            });
         }
     }
 }
