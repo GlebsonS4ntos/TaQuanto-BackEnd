@@ -16,7 +16,7 @@ namespace TaQuanto.Infraestructure.Repositories
 
         public override async Task<IEnumerable<Category>> GetAllAsync()
         {
-            return await _context.Categories.Where(c => c.ParentCategoriaId == null).ToListAsync();
+            return await _context.Categories.ToListAsync();
         }
     }
 }

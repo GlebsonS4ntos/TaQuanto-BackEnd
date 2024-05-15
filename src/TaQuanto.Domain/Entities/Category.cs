@@ -6,8 +6,8 @@ namespace TaQuanto.Domain.Entities
     {
         public string? Name { get; set; }
         [JsonIgnore]
-        public IEnumerable<Product>? Products { get; set; }
+        public virtual IEnumerable<Product>? Products { get; set; }
         public Guid? ParentCategoriaId { get; set; }
-        public Category? ParentCategory { get; set; }
+        public virtual Category? ParentCategory { get; set; }
     }
 }

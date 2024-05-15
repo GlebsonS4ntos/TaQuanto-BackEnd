@@ -23,5 +23,22 @@ namespace TaQuanto.Infraestructure.Data
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             base.OnModelCreating(modelBuilder);
         }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            foreach(var entry in ChangeTracker.Entries())
+            {
+                if (entry.State == EntityState.Added)
+                {
+                    entry.Property("CreatAt").CurrentValue = DateTime.Now; 
+                }
+                else if(entry.State == EntityState.Modified)
+                {
+                    entry.Property("UpdateAt").CurrentValue = DateTime.Now;
+                }
+            }
+
+            return base.SaveChangesAsync(cancellationToken);
+        }
     }
 }

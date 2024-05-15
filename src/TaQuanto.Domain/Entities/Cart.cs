@@ -5,7 +5,7 @@ namespace TaQuanto.Domain.Entities
     public class Cart : Entity
     {
         [JsonIgnore]
-        public IEnumerable<CartProduct>? CartProducts { get; set; }
-        public decimal ValueCart { get; set; }
+        public virtual IEnumerable<CartProduct>? CartProducts { get; set; }
+        public decimal? ValueCart { get; set; }
     }
 }

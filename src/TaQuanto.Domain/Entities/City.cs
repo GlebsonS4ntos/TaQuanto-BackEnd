@@ -7,8 +7,8 @@ namespace TaQuanto.Domain.Entities
         public string? Name {  get; set; }
         public Guid StateId { get; set; }
         [JsonIgnore]
-        public State? State { get; set; }
+        public virtual State? State { get; set; }
         [JsonIgnore]
-        public IEnumerable<Establishment>? Establishments { get; set; }
+        public virtual IEnumerable<Establishment>? Establishments { get; set; }
     }
 }

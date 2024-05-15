@@ -10,8 +10,11 @@ namespace TaQuanto.Infraestructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql($"INSERT INTO City (Id, Name, StateId, CreatAt) SELECT '{Guid.NewGuid()}', 'Barra Bonita', s.Id, " +
-                $"'{DateTime.Now}' FROM State s WHERE s.UF = 'SP'");
+            var id = Guid.NewGuid();
+            var name = "Barra Bonita";
+            var createdAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+            migrationBuilder.Sql($"INSERT INTO City (Id, Name, StateId, CreatAt) SELECT '{id}', '{name}', s.Id, '{createdAt}' FROM State s WHERE s.UF = 'SP'");
         }
 
         /// <inheritdoc />

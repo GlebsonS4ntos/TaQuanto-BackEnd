@@ -7,6 +7,6 @@ namespace TaQuanto.Domain.Entities
         public string? Name { get; set; }
         public string? UF { get; set; }
         [JsonIgnore]
-        public IEnumerable<City>? Cities { get; set; }
+        public virtual IEnumerable<City>? Cities { get; set; }
     }
 }

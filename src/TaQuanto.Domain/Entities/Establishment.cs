@@ -11,8 +11,8 @@ namespace TaQuanto.Domain.Entities
         public bool IsDraft { get; set; }
         public Guid CityId { get; set; }
         [JsonIgnore]
-        public City? City { get; set; }
+        public virtual City? City { get; set; }
         [JsonIgnore]
-        public IEnumerable<Product>? Products { get; set; }
+        public virtual IEnumerable<Product>? Products { get; set; }
     }
 }

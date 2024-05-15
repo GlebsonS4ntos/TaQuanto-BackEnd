@@ -21,7 +21,7 @@ namespace TaQuanto.Infraestructure.Helpers
         {
             service.AddDbContext<TaQuantoContext>(opt =>
             {
-                opt.UseSqlServer(config.GetConnectionString("TaQuantoDb"));
+                opt.UseLazyLoadingProxies().UseSqlServer(config.GetConnectionString("TaQuantoDb"));
             });
         }
 
