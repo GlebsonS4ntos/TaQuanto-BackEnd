@@ -12,6 +12,8 @@ namespace TaQuanto.Service.Dtos.Product
         public decimal Price { get; set; }
         public string? ImageUrl { get; set; }
         public Guid EstablishmentId { get; set; }
+        public ReadEstablishmentDto? Establishment { get; set; }
         public Guid CategoryId { get; set; }
+        public ReadCategoryDto? Category { get; set; }
     }
 }

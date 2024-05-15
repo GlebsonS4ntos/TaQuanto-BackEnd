@@ -57,7 +57,7 @@ namespace TaQuanto.Service.Validations
 
         private bool VerifyOriginalPrice(decimal? originalPrice, decimal? price)
         {
-            if(originalPrice == null || originalPrice == 0) 
+            if(originalPrice == null) 
             {
                 return true;
             }else if(originalPrice > price)

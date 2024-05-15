@@ -60,10 +60,12 @@ namespace TaQuanto.Service.Services
             {
                 //Lançar exception de Id da Categoria diferente do id vindo do Header
             }
-            
-            var category = _mapper.Map<Category>(c);
-            _unityOfWork.RepositoryCategory.Update(category);
-            await _unityOfWork.Commit();
+            else if (await _unityOfWork.RepositoryCategory.GetByIdAsync(id) != null)
+            {
+                var category = _mapper.Map<Category>(c);
+                _unityOfWork.RepositoryCategory.Update(category);
+                await _unityOfWork.Commit();
+            }
         }
 
         private async Task ValidateAsync(CreateOrUpdateCategoryDto dto)

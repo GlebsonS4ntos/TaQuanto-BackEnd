@@ -22,7 +22,9 @@ namespace TaQuanto.Service.Config
                 .ForMember(dto => dto.Name, opt => opt.MapFrom(p => p.Name))
                 .ForMember(dto => dto.ImageUrl, opt => opt.MapFrom(p => p.ImageUrl))
                 .ForMember(dto => dto.EstablishmentId, opt => opt.MapFrom(p => p.EstablishmentId))
-                .ForMember(dto => dto.CategoryId, opt => opt.MapFrom(p => p.CategoryId));
+                .ForMember(dto => dto.Establishment, opt => opt.MapFrom(p => p.Establishment))
+                .ForMember(dto => dto.CategoryId, opt => opt.MapFrom(p => p.CategoryId))
+                .ForMember(dto => dto.Category, opt => opt.MapFrom(p => p.Category));
 
             CreateMap<CreateOrUpdateProductDto, Product>()
                 .ForMember(p => p.Id, opt => opt.MapFrom(dto => dto.Id))
@@ -36,7 +38,8 @@ namespace TaQuanto.Service.Config
             CreateMap<City, ReadCityDto>()
                 .ForMember(dto => dto.Id, opt => opt.MapFrom(c => c.Id))
                 .ForMember(dto => dto.Name, opt => opt.MapFrom(c => c.Name))
-                .ForMember(dto => dto.StateId, opt => opt.MapFrom(c => c.StateId));
+                .ForMember(dto => dto.StateId, opt => opt.MapFrom(c => c.StateId))
+                .ForMember(dto => dto.State, opt => opt.MapFrom(c => c.State));
 
             CreateMap<State, ReadStateDto>()
                 .ForMember(dto => dto.Id, opt => opt.MapFrom(s => s.Id))
@@ -49,6 +52,7 @@ namespace TaQuanto.Service.Config
                 .ForMember(dto => dto.Name, opt => opt.MapFrom(e => e.Name))
                 .ForMember(dto => dto.ImageUrl, opt => opt.MapFrom(e => e.ImageUrl))
                 .ForMember(dto => dto.CityId, opt => opt.MapFrom(e => e.CityId))
+                .ForMember(dto => dto.City, opt => opt.MapFrom(e => e.City))
                 .ForMember(dto => dto.Adress, opt => opt.MapFrom(e => e.Address))
                 .ForMember(dto => dto.IsDraft, opt => opt.MapFrom(e => e.IsDraft));
 
@@ -67,7 +71,8 @@ namespace TaQuanto.Service.Config
             CreateMap<Category, ReadCategoryDto>()
                 .ForMember(dto => dto.Id, opt => opt.MapFrom(c => c.Id))
                 .ForMember(dto => dto.Name, opt => opt.MapFrom(c => c.Name))
-                .ForMember(dto => dto.ParentCategoriaId, opt => opt.MapFrom(c => c.ParentCategoriaId));
+                .ForMember(dto => dto.ParentCategoriaId, opt => opt.MapFrom(c => c.ParentCategoriaId))
+                .ForMember(dto => dto.ParentCategoria, opt => opt.MapFrom(c => c.ParentCategory));
 
             CreateMap<CreateOrUpdateCartDto, Cart>()
                 .ForMember(c => c.Id, opt => opt.MapFrom(dto => dto.Id));
@@ -79,7 +84,6 @@ namespace TaQuanto.Service.Config
 
             CreateMap<CreateOrUpdateCartProductDto, CartProduct>()
                 .ForMember(cp => cp.Id, opt => opt.MapFrom(dto => dto.Id))
-                .ForMember(cp => cp.CartId, opt => opt.MapFrom(dto => dto.CartId))
                 .ForMember(cp => cp.ProductId, opt => opt.MapFrom(dto => dto.ProductId))
                 .ForMember(cp => cp.Quantity, opt => opt.MapFrom(dto => dto.Quantity));
 

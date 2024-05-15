@@ -10,15 +10,13 @@ namespace TaQuanto.Service.Services
 {
     public class ServiceCart : IServiceCart
     {
-        private readonly IServiceCartProduct _serviceCartProduct;
         private readonly IUnityOfWork _unityOfWork;
         private readonly IMapper _mapper;
 
-        public ServiceCart(IUnityOfWork unityOfWork, IMapper mapper, IServiceCartProduct serviceCartProduct)
+        public ServiceCart(IUnityOfWork unityOfWork, IMapper mapper)
         {
             _unityOfWork = unityOfWork;
             _mapper = mapper;
-            _serviceCartProduct = serviceCartProduct;
         }
 
         public async Task<ReadCartDto> CreateCartAsync(CreateOrUpdateCartDto c)
@@ -29,15 +27,12 @@ namespace TaQuanto.Service.Services
             cart.ValueCart = await CalculateTotalCartValueAsync(c.CartProducts);
             
             var cartCreated = await _unityOfWork.RepositoryCart.CreatAsync(cart);
-
-            var cartDto = _mapper.Map<ReadCartDto>(cartCreated);
-
             await _unityOfWork.Commit();
 
-            return cartDto;
+            return _mapper.Map<ReadCartDto>(cartCreated);
         }
 
-        public async Task DeleteCartByIdAsync(Guid id)
+        public async Task DeleteCarttByIdAsync(Guid id)
         {
             var cart = await _unityOfWork.RepositoryCart.GetByIdAsync(id);
 
@@ -65,29 +60,19 @@ namespace TaQuanto.Service.Services
             {
                 //Lançar exception de Id do Cart diferente do id vindo do Header
             } 
-
-            var cartCurrent = await _unityOfWork.RepositoryCart.GetByIdAsync(id);
-
-            cartCurrent.ValueCart = await CalculateTotalCartValueAsync(c.CartProducts);
-            cartCurrent.CartProducts = _mapper.Map<IEnumerable<CartProduct>>(c.CartProducts);
-
-            _unityOfWork.RepositoryCart.Update(cartCurrent);
-            
-            foreach (var cartProduct in cartCurrent.CartProducts)
+            else if(await _unityOfWork.RepositoryCart.GetByIdAsync(id) != null)
             {
-                var existCartProduct = c.CartProducts.Where(cp => cp.Id == cartProduct.Id).Count() == 0;
+                var cart = _mapper.Map<Cart>(c);
+                cart.ValueCart = await CalculateTotalCartValueAsync(c.CartProducts);
 
-                if (existCartProduct)
-                {
-                    await _serviceCartProduct.DeleteCartProductAsync(cartProduct.Id);
-                }
+                _unityOfWork.RepositoryCart.Update(cart);
+                await _unityOfWork.Commit();
             }
-            await _unityOfWork.Commit();
         }
 
-        private async Task<decimal?> CalculateTotalCartValueAsync(IEnumerable<CreateOrUpdateCartProductDto> itens)
+        private async Task<decimal> CalculateTotalCartValueAsync(IEnumerable<CreateOrUpdateCartProductDto> itens)
         {
-            decimal? total = 0m;
+            var total = 0m;
 
             foreach (var item in itens)
             {

@@ -29,7 +29,7 @@ namespace TaQuanto.Service.Services
             establishment.ImageUrl = resultAddImage.SecureUrl.AbsoluteUri;
             establishment.ImagePublicId = resultAddImage.PublicId;
 
-            var establishmetAdd = await _unityOfWork.RepositoryEstablishment.CreatAsync(establishment);
+            var establishmetAdd = _unityOfWork.RepositoryEstablishment.CreatAsync(establishment);
             await _unityOfWork.Commit();
 
             return _mapper.Map<ReadEstablishmentDto>(establishmetAdd);
@@ -38,7 +38,6 @@ namespace TaQuanto.Service.Services
         public async Task DeleteEstablishmentAsync(Guid id)
         {
             var establishment = await _unityOfWork.RepositoryEstablishment.GetByIdAsync(id);
-            await _photo.DeletePhoto(establishment.ImagePublicId);
             _unityOfWork.RepositoryEstablishment.Delete(establishment);
 
             await _unityOfWork.Commit();
@@ -68,23 +67,17 @@ namespace TaQuanto.Service.Services
             }
 
             var establisment = _mapper.Map<Establishment>(e);
-            var establishmentCurrent = await _unityOfWork.RepositoryEstablishment.GetByIdAsync(id);
-
-            establishmentCurrent.CityId = establisment.CityId;
-            establishmentCurrent.Address = establisment.Address;
-            establishmentCurrent.IsDraft = establisment.IsDraft;
-            establishmentCurrent.Name = establisment.Name;
 
             if (e.Image != null)
             {
-                var resultDelete = await _photo.DeletePhoto(establishmentCurrent.ImagePublicId);
+                var establishmentCurrent = await _unityOfWork.RepositoryEstablishment.GetByIdAsync(id);
+                await _photo.DeletePhoto(establishmentCurrent.ImagePublicId);
                 var result = await _photo.AddPhoto(e.Image);
-
-                establishmentCurrent.ImageUrl = result.SecureUrl.AbsoluteUri;
-                establishmentCurrent.ImagePublicId = result.PublicId;
+                establisment.ImageUrl = result.SecureUrl.AbsoluteUri;
+                establisment.ImagePublicId = result.PublicId;
             }
 
-            _unityOfWork.RepositoryEstablishment.Update(establishmentCurrent);
+            _unityOfWork.RepositoryEstablishment.Update(establisment);
             await _unityOfWork.Commit();
         }
 

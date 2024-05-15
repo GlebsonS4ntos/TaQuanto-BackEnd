@@ -38,7 +38,6 @@ namespace TaQuanto.Service.Services
         public async Task DeleteProductByIdAsync(Guid id)
         {
             var product = await _unityOfWork.RepositoryProduct.GetByIdAsync(id);
-            await _photo.DeletePhoto(product.ImagePublicId);
             _unityOfWork.RepositoryProduct.Delete(product);
 
             await _unityOfWork.Commit();
@@ -67,24 +66,18 @@ namespace TaQuanto.Service.Services
                 //Lançar exception de Id do Product diferente do id vindo do Header
             }
 
-            var productCurrent = await _unityOfWork.RepositoryProduct.GetByIdAsync(id);
-
-            productCurrent.Description = p.Description;
-            productCurrent.OriginalPrice = p.OriginalPrice;
-            productCurrent.Price = p.Price;
-            productCurrent.CategoryId = p.CategoryId;
-            productCurrent.EstablishmentId = p.EstablishmentId;
+            var product = _mapper.Map<Product>(p);
 
             if (p.Image != null)
             {
+                var productCurrent = await _unityOfWork.RepositoryProduct.GetByIdAsync(id);
                 await _photo.DeletePhoto(productCurrent.ImagePublicId);
                 var result = await _photo.AddPhoto(p.Image);
-
-                productCurrent.ImageUrl = result.SecureUrl.AbsoluteUri;
-                productCurrent.ImagePublicId = result.PublicId;
+                product.ImageUrl = result.SecureUrl.AbsoluteUri;
+                product.ImagePublicId = result.PublicId;
             }
 
-            _unityOfWork.RepositoryProduct.Update(productCurrent);
+            _unityOfWork.RepositoryProduct.Update(product);
             await _unityOfWork.Commit();
         }
 
