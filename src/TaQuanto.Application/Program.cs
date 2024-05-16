@@ -1,4 +1,6 @@
 
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using TaQuanto.Infraestructure.Helpers;
 using TaQuanto.Service.Helpers;
 
@@ -11,9 +13,11 @@ namespace TaQuanto.Application
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddInfraestructure(builder.Configuration);
-            builder.Services.AddService();
+            builder.Services.AddService(builder.Configuration);
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                .AddJsonOptions(opt => opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles)
+                .AddJsonOptions(opt => opt.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower);
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
