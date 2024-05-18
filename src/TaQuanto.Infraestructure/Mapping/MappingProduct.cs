@@ -43,7 +43,7 @@ namespace TaQuanto.Infraestructure.Mapping
             builder.HasOne(p => p.Establishment)
                 .WithMany(e => e.Products)
                 .HasForeignKey(p => p.EstablishmentId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(p => p.Category)
                 .WithMany(c => c.Products)
