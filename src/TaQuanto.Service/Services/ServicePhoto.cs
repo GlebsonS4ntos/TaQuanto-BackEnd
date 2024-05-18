@@ -2,7 +2,8 @@
 using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Webp;
+using SixLabors.ImageSharp.PixelFormats;
 using TaQuanto.Service.Helpers;
 using TaQuanto.Service.Interfaces;
 
@@ -43,10 +44,25 @@ namespace TaQuanto.Service.Services
             {
                 using (var image = Image.Load(inputStream))
                 {
-                    var encoder = new SixLabors.ImageSharp.Formats.Webp.WebpEncoder { Quality = 75 }; // Ajuste a qualidade conforme necessário
+                    var extencionImage = Path.GetExtension(img.FileName).ToLowerInvariant();
+                    if (extencionImage == ".png")
+                    {
+                        var outputImage = new Image<Rgba32>(image.Width, image.Height);
+                        outputImage.Mutate(ctx => ctx.BackgroundColor(Color.White));
+                        outputImage.Mutate(ctx => ctx.DrawImage(image, new SixLabors.ImageSharp.Point(0, 0), 1));
+
+                        var encoder = new WebpEncoder { Quality = 50 };
+                        using (var outputStream = new MemoryStream())
+                        {
+                            outputImage.Save(outputStream, encoder);
+                            return outputStream.ToArray();
+                        }
+                    }
+
+                    var enc = new WebpEncoder { Quality = 50 };
                     using (var outputStream = new MemoryStream())
                     {
-                        image.Save(outputStream, encoder);
+                        image.Save(outputStream, enc);
                         return outputStream.ToArray();
                     }
                 }
