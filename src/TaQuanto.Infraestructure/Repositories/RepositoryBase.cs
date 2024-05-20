@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaQuanto.Domain.Entities;
+using TaQuanto.Domain.Exception;
 using TaQuanto.Infraestructure.Data;
 using TaQuanto.Infraestructure.Interface;
 
@@ -22,7 +23,7 @@ namespace TaQuanto.Infraestructure.Repositories
 
         public void Delete(T entity)
         {
-            _context.Set<T>().Remove(entity);
+                _context.Set<T>().Remove(entity);
         }
 
         public virtual async Task<IEnumerable<T>> GetAllAsync()
@@ -32,7 +33,12 @@ namespace TaQuanto.Infraestructure.Repositories
 
         public async Task<T> GetByIdAsync(Guid id)
         {
-            return await _context.Set<T>().FindAsync(id);
+            var entity = await _context.Set<T>().FindAsync(id);
+            if (entity == null)
+            {
+                throw new NotFoundException("Não foi encontrado.");
+            }
+            return entity; 
         }
 
         public void Update(T entity)

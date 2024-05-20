@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using TaQuanto.Domain.Entities;
+using TaQuanto.Domain.Exception;
 using TaQuanto.Infraestructure.Interface;
 using TaQuanto.Service.Dtos.Category;
 using TaQuanto.Service.Interfaces;
@@ -32,10 +33,17 @@ namespace TaQuanto.Service.Services
 
         public async Task DeleteCategoryByIdAsync(Guid id)
         {
-            var category = await _unityOfWork.RepositoryCategory.GetByIdAsync(id);
+            try
+            {
+                var category = await _unityOfWork.RepositoryCategory.GetByIdAsync(id);
 
-            _unityOfWork.RepositoryCategory.Delete(category);
-            await _unityOfWork.Commit();
+                _unityOfWork.RepositoryCategory.Delete(category);
+                await _unityOfWork.Commit();
+            }
+            catch (Exception ex)
+            {
+                throw new RestrictDeleteException("Não é possivel Deletar, pois existe itens associados ao mesmo.");
+            }
         }
 
         public async Task<IEnumerable<ReadCategoryDto>> GetAllCategoriesAsync()
@@ -58,7 +66,7 @@ namespace TaQuanto.Service.Services
 
             if(c.Id != id)
             {
-                //Lançar exception de Id da Categoria diferente do id vindo do Header
+                throw new HeaderIdException("Verifique se o Id da Categoria não é o mesmo da Categoria passado.");
             }
             
             var category = _mapper.Map<Category>(c);
@@ -72,7 +80,7 @@ namespace TaQuanto.Service.Services
             var result = await validator.ValidateAsync(dto);
             if (!result.IsValid)
             {
-                //Lançar exception caso n seja valido 
+                throw new ValidationException(result.Errors.Select(e => e.ErrorMessage).ToList());
             }
         }
     }

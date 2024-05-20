@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using TaQuanto.Domain.Entities;
+using TaQuanto.Domain.Exception;
 using TaQuanto.Infraestructure.Interface;
 using TaQuanto.Service.Dtos.Product;
 using TaQuanto.Service.Interfaces;
@@ -64,7 +65,7 @@ namespace TaQuanto.Service.Services
 
             if (p.Id != id)
             {
-                //Lançar exception de Id do Product diferente do id vindo do Header
+                throw new HeaderIdException("Verifique se o Id do Produto não é o mesmo do Produto passado.");
             }
 
             var productCurrent = await _unityOfWork.RepositoryProduct.GetByIdAsync(id);
@@ -72,8 +73,8 @@ namespace TaQuanto.Service.Services
             productCurrent.Description = p.Description;
             productCurrent.OriginalPrice = p.OriginalPrice;
             productCurrent.Price = p.Price;
-            productCurrent.CategoryId = p.CategoryId;
-            productCurrent.EstablishmentId = p.EstablishmentId;
+            productCurrent.CategoryId = (Guid) p.CategoryId;
+            productCurrent.EstablishmentId = (Guid) p.EstablishmentId;
 
             if (p.Image != null)
             {
@@ -94,7 +95,7 @@ namespace TaQuanto.Service.Services
             var result = await validator.ValidateAsync(dto);
             if (!result.IsValid)
             {
-                //Lançar exception caso n seja valido 
+                throw new ValidationException(result.Errors.Select(e => e.ErrorMessage).ToList());
             }
         }
     }

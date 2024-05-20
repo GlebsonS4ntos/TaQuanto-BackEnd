@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using TaQuanto.Domain.Entities;
+using TaQuanto.Domain.Exception;
 using TaQuanto.Infraestructure.Interface;
 using TaQuanto.Service.Dtos.Cart;
 using TaQuanto.Service.Dtos.CartProduct;
@@ -39,10 +40,10 @@ namespace TaQuanto.Service.Services
 
         public async Task DeleteCartByIdAsync(Guid id)
         {
-            var cart = await _unityOfWork.RepositoryCart.GetByIdAsync(id);
+                var cart = await _unityOfWork.RepositoryCart.GetByIdAsync(id);
 
-            _unityOfWork.RepositoryCart.Delete(cart);
-            await _unityOfWork.Commit();
+                _unityOfWork.RepositoryCart.Delete(cart);
+                await _unityOfWork.Commit();
         }
 
         public async Task<ReadCartDto> GetCartByIdAsync(Guid id)
@@ -63,7 +64,7 @@ namespace TaQuanto.Service.Services
 
             if (id != c.Id)
             {
-                //Lançar exception de Id do Cart diferente do id vindo do Header
+                throw new HeaderIdException("Verifique se o Id do Carrinho não é o mesmo do Carrinho passado.");
             } 
 
             var cartCurrent = await _unityOfWork.RepositoryCart.GetByIdAsync(id);
@@ -104,7 +105,7 @@ namespace TaQuanto.Service.Services
             var result = await validate.ValidateAsync(cart);
             if (!result.IsValid)
             {
-                //Lançar exception caso n seja valido 
+                throw new ValidationException(result.Errors.Select(e => e.ErrorMessage).ToList());
             }
         }
     }

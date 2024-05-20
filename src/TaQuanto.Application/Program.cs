@@ -1,6 +1,7 @@
 
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using TaQuanto.Application.Filters;
 using TaQuanto.Infraestructure.Helpers;
 using TaQuanto.Service.Helpers;
 
@@ -21,6 +22,8 @@ namespace TaQuanto.Application
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddMvc(opt => opt.Filters.Add(typeof(ExceptionFilter)));
 
             var app = builder.Build();
 

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using TaQuanto.Domain.Entities;
+using TaQuanto.Domain.Exception;
 using TaQuanto.Infraestructure.Interface;
 using TaQuanto.Service.Dtos.Establishment;
 using TaQuanto.Service.Interfaces;
@@ -37,11 +38,18 @@ namespace TaQuanto.Service.Services
 
         public async Task DeleteEstablishmentAsync(Guid id)
         {
-            var establishment = await _unityOfWork.RepositoryEstablishment.GetByIdAsync(id);
-            await _photo.DeletePhoto(establishment.ImagePublicId);
-            _unityOfWork.RepositoryEstablishment.Delete(establishment);
+            try
+            {
+                var establishment = await _unityOfWork.RepositoryEstablishment.GetByIdAsync(id);
+                await _photo.DeletePhoto(establishment.ImagePublicId);
+                _unityOfWork.RepositoryEstablishment.Delete(establishment);
 
-            await _unityOfWork.Commit();
+                await _unityOfWork.Commit();
+            }
+            catch (Exception ex)
+            {
+                throw new RestrictDeleteException("Não é possivel Deletar, pois existe itens associados ao mesmo.");
+            }
         }
 
         public async Task<IEnumerable<ReadEstablishmentDto>> GetAllEstablishmentAsync()
@@ -64,7 +72,7 @@ namespace TaQuanto.Service.Services
 
             if(e.Id != id)
             {
-                //Lançar exception de Id do Establishment diferente do id vindo do Header
+                throw new HeaderIdException("Verifique se o Id do Estabelecimento não é o mesmo do Estabelecimento passado.");
             }
 
             var establisment = _mapper.Map<Establishment>(e);
@@ -94,7 +102,7 @@ namespace TaQuanto.Service.Services
             var result = await validator.ValidateAsync(dto);
             if (!result.IsValid)
             {
-                //Lançar exception caso n seja valido 
+                throw new ValidationException(result.Errors.Select(e => e.ErrorMessage).ToList());
             }
         }
     }
