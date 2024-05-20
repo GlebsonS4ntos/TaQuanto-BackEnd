@@ -9,8 +9,10 @@ namespace TaQuanto.Service.Validations
         public EstablishmentValidation()
         {
             RuleFor(e => e.Name)
-                .NotNull().WithMessage("O Estabelecimento deve possuir um nome.")
-                .NotEmpty().WithMessage("O Estabelecimento deve possuir um nome.")
+                .NotNull().WithMessage("O Estabelecimento deve possuir um nome.");
+
+            RuleFor(e => e.Name)
+                .NotEmpty().When(e => e.Name != null).WithMessage("O Estabelecimento deve possuir um nome.")
                 .MinimumLength(3).WithMessage("O Nome do Estabelecimento precisa de no minimo 3 caracteres.")
                 .MaximumLength(100).WithMessage("O Nome do Estabelecimento precisa ter no maximo 100 caracteres");
 
@@ -20,23 +22,29 @@ namespace TaQuanto.Service.Validations
                 .Must((e, image) => VerifyImageSize(image, e.Id)).WithMessage("O Arquivo da Imagem adicionada é maior que 5MB");
 
             RuleFor(e => e.Adress)
-                .NotNull().WithMessage("O Endereço do Estabelecimento Precisa ser Preenchido.")
-                .NotEmpty().WithMessage("O Endereço do Estabelecimento Precisa ser Preenchido.")
+                .NotNull().WithMessage("O Endereço do Estabelecimento Precisa ser Preenchido.");
+
+            RuleFor(e => e.Adress)
+                .NotEmpty().When(e => e.Adress != null).WithMessage("O Endereço do Estabelecimento Precisa ser Preenchido.")
                 .MinimumLength(3).WithMessage("O Endereço deve ter mais de 3 caracteres.")
                 .MaximumLength(100).WithMessage("O Endereço deve ter menos de 100 caracteres.");
 
             RuleFor(e => e.CityId)
-                .NotNull().WithMessage("Um Estabelecimento precisa pertencer a uma Cidade")
-                .NotEmpty().WithMessage("Um Estabelecimento precisa pertencer a uma Cidade");
+                .NotNull().WithMessage("Um Estabelecimento precisa pertencer a uma Cidade");
+
+            RuleFor(e => e.CityId)
+                .NotEmpty().When(e => e.CityId != null).WithMessage("Um Estabelecimento precisa pertencer a uma Cidade");
 
             RuleFor(e => e.IsDraft)
-                .NotNull().WithMessage("Você deve especificar se o Estabelecimento é apenas um Rascunho.")
-                .NotEmpty().WithMessage("Você deve especificar se o Estabelecimento é apenas um Rascunho.");
+                .NotNull().WithMessage("Você deve especificar se o Estabelecimento é apenas um Rascunho.");
+
+            RuleFor(e => e.IsDraft)
+                .NotEmpty().When(e => e.IsDraft != null).WithMessage("Você deve especificar se o Estabelecimento é apenas um Rascunho.");
         }
 
         private bool VerifyExtencion(IFormFile? image, Guid? id)
         {
-            if (id != null && image == null)
+            if (image == null)
             {
                 return true;
             }
@@ -48,7 +56,7 @@ namespace TaQuanto.Service.Validations
 
         private bool VerifyImageSize(IFormFile? image, Guid? id)
         {
-            if (id != null && image == null)
+            if (image == null)
             {
                 return true;
             }
