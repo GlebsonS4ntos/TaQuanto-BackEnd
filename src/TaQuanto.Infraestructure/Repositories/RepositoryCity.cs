@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using TaQuanto.Domain.Entities;
+﻿using TaQuanto.Domain.Entities;
+using TaQuanto.Domain.Pagination;
 using TaQuanto.Infraestructure.Data;
 using TaQuanto.Infraestructure.Interface;
 
@@ -14,9 +14,18 @@ namespace TaQuanto.Infraestructure.Repositories
             _context = context;
         }
 
-        public async Task<List<City>> GetAllCityByStateIdAsync(Guid id)
+        public async Task<PagedList<City>> GetAllCityAsync(CityParameters parameters)
         {
-            return await _context.Citys.Where(c => c.StateId == id).ToListAsync();
+            var items = await GetAllAsync();
+
+            var citiesOrderByName = items.OrderBy(c => c.Name).AsQueryable();
+
+            if (parameters.StateId != null)
+            {
+                citiesOrderByName = citiesOrderByName.Where(c => c.StateId == parameters.StateId);
+            }
+
+            return new PagedList<City>(citiesOrderByName.ToList()); 
         }
     }
 }

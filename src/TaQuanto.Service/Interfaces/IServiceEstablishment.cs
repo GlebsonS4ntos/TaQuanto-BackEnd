@@ -1,5 +1,6 @@
 ﻿using TaQuanto.Domain.Entities;
 using TaQuanto.Service.Dtos.Establishment;
+using TaQuanto.Domain.Pagination;
 
 namespace TaQuanto.Service.Interfaces
 {
@@ -9,6 +10,6 @@ namespace TaQuanto.Service.Interfaces
         Task UpdateEstablishmentAsync(CreateOrUpdateEstablishmentDto e, Guid id);
         Task DeleteEstablishmentAsync(Guid id);
         Task<ReadEstablishmentDto> GetEstablishmentByIdAsync(Guid id);
-        Task<IEnumerable<ReadEstablishmentDto>> GetAllEstablishmentAsync();
+        Task<PagedList<ReadEstablishmentDto>> GetAllEstablishmentAsync(EstablishmentParameters parameters);
     }
 }

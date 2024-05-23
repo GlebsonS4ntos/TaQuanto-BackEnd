@@ -4,6 +4,7 @@ using TaQuanto.Domain.Exception;
 using TaQuanto.Infraestructure.Interface;
 using TaQuanto.Service.Dtos.Product;
 using TaQuanto.Service.Interfaces;
+using TaQuanto.Domain.Pagination;
 using TaQuanto.Service.Validations;
 
 namespace TaQuanto.Service.Services
@@ -45,11 +46,11 @@ namespace TaQuanto.Service.Services
             await _unityOfWork.Commit();
         }
 
-        public async Task<IEnumerable<ReadProductDto>> GetAllProductsAsync()
+        public async Task<PagedList<ReadProductDto>> GetAllProductsAsync(ProductParameters parameters)
         {
-            var products = await _unityOfWork.RepositoryProduct.GetAllAsync();
+            var products = await _unityOfWork.RepositoryProduct.GetAllProductsAsync(parameters);
 
-            return _mapper.Map<IEnumerable<ReadProductDto>>(products);
+            return _mapper.Map<PagedList<ReadProductDto>>(products);
         }
 
         public async Task<ReadProductDto> GetProductByIdAsync(Guid id) 

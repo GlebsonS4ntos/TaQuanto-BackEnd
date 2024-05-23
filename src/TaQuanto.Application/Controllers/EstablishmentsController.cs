@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using TaQuanto.Domain.Pagination;
 using TaQuanto.Service.Dtos.Establishment;
 using TaQuanto.Service.Interfaces;
 
@@ -16,9 +18,23 @@ namespace TaQuanto.Application.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllEstablishmentsAsync()
+        public async Task<IActionResult> GetAllEstablishmentsAsync([FromQuery] EstablishmentParameters parameters)
         {
-            return Ok(await _service.GetAllEstablishmentAsync());
+            var establishments = await _service.GetAllEstablishmentAsync(parameters);
+
+            var metadata = new
+            {
+                page_size = establishments.PageSize,
+                page_current = establishments.PageCurrent,
+                total_page = establishments.TotalPage,
+                total_count = establishments.TotalCount,
+                has_next_page = establishments.HasNextPage,
+                has_previous_page = establishments.HasPreviousPage,
+            };
+
+            Response.Headers.Append("X-Pagination", JsonConvert.SerializeObject(metadata));
+
+            return Ok(establishments);
         }
 
         [HttpGet("{id:guid}", Name = "ObterEstabelecimento")]

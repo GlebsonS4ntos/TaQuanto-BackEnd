@@ -7,6 +7,7 @@ using TaQuanto.Service.Dtos.City;
 using TaQuanto.Service.Dtos.Establishment;
 using TaQuanto.Service.Dtos.Product;
 using TaQuanto.Service.Dtos.State;
+using TaQuanto.Domain.Pagination;
 
 namespace TaQuanto.Service.Config
 {
@@ -89,6 +90,8 @@ namespace TaQuanto.Service.Config
                 .ForMember(dto => dto.Product, opt => opt.MapFrom(cp => cp.Product))
                 .ForMember(dto => dto.CartId, opt => opt.MapFrom(cp => cp.CartId))
                 .ForMember(dto => dto.Quantity, opt => opt.MapFrom(cp => cp.Quantity));
+
+            CreateMap(typeof(PagedList<>), typeof(PagedList<>)).ConvertUsing(typeof(PagedListConvert<,>));
         }
     }
 }

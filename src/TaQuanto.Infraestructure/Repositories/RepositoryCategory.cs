@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using TaQuanto.Domain.Entities;
+﻿using TaQuanto.Domain.Entities;
 using TaQuanto.Infraestructure.Data;
 using TaQuanto.Infraestructure.Interface;
+using TaQuanto.Domain.Pagination;
 
 namespace TaQuanto.Infraestructure.Repositories
 {
@@ -14,9 +14,18 @@ namespace TaQuanto.Infraestructure.Repositories
             _context = context;
         }
 
-        public override async Task<IEnumerable<Category>> GetAllAsync()
+        public async Task<PagedList<Category>> GetAllCategoriesAsync(CategoryParameters parameters)
         {
-            return await _context.Categories.ToListAsync();
+            var categories = await GetAllAsync();
+
+            var categoriesOrderByName = categories.OrderBy(c => c.Name).AsQueryable();
+
+            if (parameters.CategoryId != null)
+            {
+                categoriesOrderByName = categoriesOrderByName.Where(c => c.ParentCategoriaId == parameters.CategoryId);
+            }
+
+            return new PagedList<Category>(categoriesOrderByName.ToList()); 
         }
     }
 }

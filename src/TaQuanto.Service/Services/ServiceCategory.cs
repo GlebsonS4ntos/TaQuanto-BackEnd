@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using TaQuanto.Domain.Entities;
 using TaQuanto.Domain.Exception;
+using TaQuanto.Domain.Pagination;
 using TaQuanto.Infraestructure.Interface;
 using TaQuanto.Service.Dtos.Category;
 using TaQuanto.Service.Interfaces;
@@ -46,11 +47,11 @@ namespace TaQuanto.Service.Services
             }
         }
 
-        public async Task<IEnumerable<ReadCategoryDto>> GetAllCategoriesAsync()
+        public async Task<PagedList<ReadCategoryDto>> GetAllCategoriesAsync(CategoryParameters parameters)
         {
-            var categories = await _unityOfWork.RepositoryCategory.GetAllAsync();
+            var categories = await _unityOfWork.RepositoryCategory.GetAllCategoriesAsync(parameters);
 
-            return _mapper.Map<IEnumerable<ReadCategoryDto>>(categories);
+             return _mapper.Map<PagedList<ReadCategoryDto>>(categories);
         }
 
         public async Task<ReadCategoryDto> GetCategoryByIdAsync(Guid id)

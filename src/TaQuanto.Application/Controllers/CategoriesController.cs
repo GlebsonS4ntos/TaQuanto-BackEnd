@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TaQuanto.Domain.Pagination;
 using TaQuanto.Service.Dtos.Category;
 using TaQuanto.Service.Interfaces;
 
@@ -16,9 +17,10 @@ namespace TaQuanto.Application.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllCategoriesAsync()
+        public async Task<IActionResult> GetAllCategoriesAsync([FromQuery] CategoryParameters parameters)
         {
-            return Ok(await _service.GetAllCategoriesAsync());
+            var categories = await _service.GetAllCategoriesAsync(parameters);
+            return Ok(categories);
         }
 
         [HttpGet("{id:guid}", Name = "ObterCategoria")]

@@ -4,6 +4,7 @@ using TaQuanto.Domain.Exception;
 using TaQuanto.Infraestructure.Interface;
 using TaQuanto.Service.Dtos.Establishment;
 using TaQuanto.Service.Interfaces;
+using TaQuanto.Domain.Pagination;
 using TaQuanto.Service.Validations;
 
 namespace TaQuanto.Service.Services
@@ -52,11 +53,11 @@ namespace TaQuanto.Service.Services
             }
         }
 
-        public async Task<IEnumerable<ReadEstablishmentDto>> GetAllEstablishmentAsync()
+        public async Task<PagedList<ReadEstablishmentDto>> GetAllEstablishmentAsync(EstablishmentParameters parameters)
         {
-            var establishments = await _unityOfWork.RepositoryEstablishment.GetAllAsync();
+            var establishments = await _unityOfWork.RepositoryEstablishment.GetAllEstablishmentAsync(parameters);
 
-            return _mapper.Map<IEnumerable<ReadEstablishmentDto>>(establishments);
+            return _mapper.Map<PagedList<ReadEstablishmentDto>>(establishments);
         }
 
         public async Task<ReadEstablishmentDto> GetEstablishmentByIdAsync(Guid id)

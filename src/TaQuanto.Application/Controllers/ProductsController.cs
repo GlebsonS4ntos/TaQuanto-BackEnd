@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using TaQuanto.Domain.Entities;
+using TaQuanto.Domain.Pagination;
 using TaQuanto.Service.Dtos.Product;
 using TaQuanto.Service.Interfaces;
 
@@ -16,9 +19,23 @@ namespace TaQuanto.Application.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllProductsAsync()
+        public async Task<IActionResult> GetAllProductsAsync([FromQuery] ProductParameters parameters)
         {
-            return Ok(await _service.GetAllProductsAsync());
+            var products = await _service.GetAllProductsAsync(parameters);
+
+            var metadata = new
+            {
+                page_size = products.PageSize,
+                page_current = products.PageCurrent,
+                total_page = products.TotalPage,
+                total_count = products.TotalCount,
+                has_next_page = products.HasNextPage,
+                has_previous_page = products.HasPreviousPage,
+            };
+
+            Response.Headers.Append("X-Pagination", JsonConvert.SerializeObject(metadata));
+
+            return Ok(products);
         }
 
         [HttpGet("{id:guid}", Name = "ObterProduto")]

@@ -1,4 +1,5 @@
 ﻿using TaQuanto.Service.Dtos.Category;
+using TaQuanto.Domain.Pagination;
 
 namespace TaQuanto.Service.Interfaces
 {
@@ -8,6 +9,6 @@ namespace TaQuanto.Service.Interfaces
         Task UpdateCategoryAsync(CreateOrUpdateCategoryDto c, Guid id);
         Task DeleteCategoryByIdAsync(Guid id);
         Task<ReadCategoryDto> GetCategoryByIdAsync(Guid id);
-        Task<IEnumerable<ReadCategoryDto>> GetAllCategoriesAsync();
+        Task<PagedList<ReadCategoryDto>> GetAllCategoriesAsync(CategoryParameters parameters);
     }
 }

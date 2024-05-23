@@ -3,6 +3,7 @@ using TaQuanto.Infraestructure.Interface;
 using TaQuanto.Service.Dtos.City;
 using TaQuanto.Service.Dtos.State;
 using TaQuanto.Service.Interfaces;
+using TaQuanto.Domain.Pagination;
 
 namespace TaQuanto.Service.Services
 {
@@ -17,11 +18,11 @@ namespace TaQuanto.Service.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ReadCityDto>> GetAllCityAsync()
+        public async Task<PagedList<ReadCityDto>> GetAllCityAsync(CityParameters parameters)
         {
-            var cities = await _unityOfWork.RepositoryCity.GetAllAsync();
+            var cities = await _unityOfWork.RepositoryCity.GetAllCityAsync(parameters);
 
-            return _mapper.Map<IEnumerable<ReadCityDto>>(cities);
+            return _mapper.Map<PagedList<ReadCityDto>>(cities);
         }
 
         public async Task<ReadCityDto> GetCityByIdAsync(Guid id)

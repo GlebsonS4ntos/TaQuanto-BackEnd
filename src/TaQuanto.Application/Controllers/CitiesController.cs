@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TaQuanto.Domain.Pagination;
 using TaQuanto.Service.Interfaces;
 
 namespace TaQuanto.Application.Controllers
@@ -16,9 +17,10 @@ namespace TaQuanto.Application.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllCitiesAsync()
+        public async Task<IActionResult> GetAllCitiesAsync([FromQuery] CityParameters parameters)
         {
-            return Ok(await _service.GetAllCityAsync());
+            var cities = await _service.GetAllCityAsync(parameters);
+            return Ok(cities);
         }
 
         [HttpGet("{id:guid}")]
