@@ -1,5 +1,6 @@
 ﻿using TaQuanto.Service.Dtos.Category;
 using TaQuanto.Domain.Pagination;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace TaQuanto.Service.Interfaces
 {
@@ -10,5 +11,6 @@ namespace TaQuanto.Service.Interfaces
         Task DeleteCategoryByIdAsync(Guid id);
         Task<ReadCategoryDto> GetCategoryByIdAsync(Guid id);
         Task<PagedList<ReadCategoryDto>> GetAllCategoriesAsync(CategoryParameters parameters);
+        Task UpdatePatchCategoryAsync(JsonPatchDocument<CreateOrUpdateCategoryDto> dto, Guid id);
     }
 }

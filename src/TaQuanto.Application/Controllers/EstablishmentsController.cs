@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using TaQuanto.Domain.Pagination;
 using TaQuanto.Service.Dtos.Establishment;
@@ -61,6 +62,13 @@ namespace TaQuanto.Application.Controllers
         public async Task<IActionResult> DeleteEstablishmentAsync([FromRoute] Guid id)
         {
             await _service.DeleteEstablishmentAsync(id);
+            return NoContent();
+        }
+
+        [HttpPatch("{id:guid}")]
+        public async Task<IActionResult> UpdatePatchEstablishmentAsync([FromRoute] Guid id, [FromBody] JsonPatchDocument<CreateOrUpdateEstablishmentDto> dto) 
+        {
+            await _service.UpdatePatchEstablishmentAsync(dto, id);
             return NoContent();
         }
     }

@@ -6,6 +6,7 @@ using TaQuanto.Service.Dtos.Product;
 using TaQuanto.Service.Interfaces;
 using TaQuanto.Domain.Pagination;
 using TaQuanto.Service.Validations;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace TaQuanto.Service.Services
 {
@@ -71,11 +72,7 @@ namespace TaQuanto.Service.Services
 
             var productCurrent = await _unityOfWork.RepositoryProduct.GetByIdAsync(id);
 
-            productCurrent.Description = p.Description;
-            productCurrent.OriginalPrice = p.OriginalPrice;
-            productCurrent.Price = p.Price;
-            productCurrent.CategoryId = (Guid) p.CategoryId;
-            productCurrent.EstablishmentId = (Guid) p.EstablishmentId;
+            _mapper.Map(p, productCurrent);
 
             if (p.Image != null)
             {
@@ -87,6 +84,19 @@ namespace TaQuanto.Service.Services
             }
 
             _unityOfWork.RepositoryProduct.Update(productCurrent);
+            await _unityOfWork.Commit();
+        }
+
+        public async Task UpdatePatchProductAsync(JsonPatchDocument<CreateOrUpdateProductDto> dto, Guid id)
+        {
+            var entity = await _unityOfWork.RepositoryProduct.GetByIdAsync(id);
+
+            var productDto = _mapper.Map<CreateOrUpdateProductDto>(entity);
+            dto.ApplyTo(productDto);
+            await ValidateAsync(productDto);
+            _mapper.Map(productDto, entity);
+
+            _unityOfWork.RepositoryProduct.Update(entity);
             await _unityOfWork.Commit();
         }
 

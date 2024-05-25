@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using TaQuanto.Domain.Pagination;
 using TaQuanto.Service.Dtos.Category;
 using TaQuanto.Service.Interfaces;
@@ -47,6 +48,13 @@ namespace TaQuanto.Application.Controllers
         public async Task<IActionResult> DeleteCategoryAsync([FromRoute] Guid id)
         {
             await _service.DeleteCategoryByIdAsync(id);
+            return NoContent();
+        }
+
+        [HttpPatch("{id:guid}")]
+        public async Task<IActionResult> PatchCategoryAsync([FromRoute] Guid id, [FromBody] JsonPatchDocument<CreateOrUpdateCategoryDto> patchCategory)
+        {
+            await _service.UpdatePatchCategoryAsync(patchCategory, id);
             return NoContent();
         }
     }

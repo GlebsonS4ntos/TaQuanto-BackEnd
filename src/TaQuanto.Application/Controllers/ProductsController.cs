@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using TaQuanto.Domain.Entities;
 using TaQuanto.Domain.Pagination;
@@ -62,6 +63,13 @@ namespace TaQuanto.Application.Controllers
         public async Task<IActionResult> DeleteProductAsync([FromRoute] Guid id)
         {
             await _service.DeleteProductByIdAsync(id);
+            return NoContent();
+        }
+
+        [HttpPatch("{id:Guid}")]
+        public async Task<IActionResult> PatchProductAsync([FromRoute] Guid id, [FromBody] JsonPatchDocument<CreateOrUpdateProductDto> patchProduct)
+        {
+            await _service.UpdatePatchProductAsync(patchProduct, id);
             return NoContent();
         }
     }

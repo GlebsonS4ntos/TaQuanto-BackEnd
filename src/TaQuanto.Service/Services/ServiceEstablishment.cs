@@ -6,6 +6,7 @@ using TaQuanto.Service.Dtos.Establishment;
 using TaQuanto.Service.Interfaces;
 using TaQuanto.Domain.Pagination;
 using TaQuanto.Service.Validations;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace TaQuanto.Service.Services
 {
@@ -71,18 +72,14 @@ namespace TaQuanto.Service.Services
         {
             await ValidateAsync(e);
 
-            if(e.Id != id)
+            if (e.Id != id)
             {
                 throw new HeaderIdException("Verifique se o Id do Estabelecimento não é o mesmo do Estabelecimento passado.");
             }
 
-            var establisment = _mapper.Map<Establishment>(e);
             var establishmentCurrent = await _unityOfWork.RepositoryEstablishment.GetByIdAsync(id);
 
-            establishmentCurrent.CityId = establisment.CityId;
-            establishmentCurrent.Address = establisment.Address;
-            establishmentCurrent.IsDraft = establisment.IsDraft;
-            establishmentCurrent.Name = establisment.Name;
+            _mapper.Map(e, establishmentCurrent);
 
             if (e.Image != null)
             {
@@ -94,6 +91,19 @@ namespace TaQuanto.Service.Services
             }
 
             _unityOfWork.RepositoryEstablishment.Update(establishmentCurrent);
+            await _unityOfWork.Commit();
+        }
+
+        public async Task UpdatePatchEstablishmentAsync(JsonPatchDocument<CreateOrUpdateEstablishmentDto> dto, Guid id)
+        {
+            var entity = await _unityOfWork.RepositoryEstablishment.GetByIdAsync(id);
+
+            var establishmentDto = _mapper.Map<CreateOrUpdateEstablishmentDto>(entity);
+            dto.ApplyTo(establishmentDto);
+            await ValidateAsync(establishmentDto);
+            _mapper.Map(establishmentDto, entity);
+
+            _unityOfWork.RepositoryEstablishment.Update(entity);
             await _unityOfWork.Commit();
         }
 

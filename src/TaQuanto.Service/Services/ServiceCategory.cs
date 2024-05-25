@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using TaQuanto.Domain.Entities;
 using TaQuanto.Domain.Exception;
 using TaQuanto.Domain.Pagination;
@@ -72,6 +73,20 @@ namespace TaQuanto.Service.Services
             
             var category = _mapper.Map<Category>(c);
             _unityOfWork.RepositoryCategory.Update(category);
+            await _unityOfWork.Commit();
+        }
+
+        public async Task UpdatePatchCategoryAsync(JsonPatchDocument<CreateOrUpdateCategoryDto> dto, Guid id)
+        {
+            var entity = await _unityOfWork.RepositoryCategory.GetByIdAsync(id);
+
+            var categoryDto = _mapper.Map<CreateOrUpdateCategoryDto>(entity);
+            dto.ApplyTo(categoryDto);
+            await ValidateAsync(categoryDto);
+
+            _mapper.Map(categoryDto, entity);
+
+            _unityOfWork.RepositoryCategory.Update(entity);
             await _unityOfWork.Commit();
         }
 
